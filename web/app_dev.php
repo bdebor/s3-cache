@@ -3,6 +3,8 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
+$time = microtime(true);
+
 // If you don't want to setup permissions the proper way, just uncomment the following PHP line
 // read http://symfony.com/doc/current/setup.html#checking-symfony-application-configuration-and-setup
 // for more information
@@ -28,3 +30,6 @@ $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
+
+echo('Temps de traitement :');
+echo(microtime(true) - $time);  // s'affiche 2 fois ???

@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    cache_type: file_system
 
 framework:
     #esi: ~
@@ -60,6 +61,13 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+
+doctrine_cache:
+    providers:
+        my_cache:
+            type: '%cache_type%'
+            file_system:
+                directory: '%kernel.cache_dir%/my_cache'
 
 # Swiftmailer Configuration
 swiftmailer:
