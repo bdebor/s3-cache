@@ -14,18 +14,37 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+//        $str = 'pppppp';
+//        $cache = $this->get('doctrine_cache.providers.my_cache');
+//        $key = md5($str);
+//        if ($cache->contains($key)) {
+//            $str = $cache->fetch($key);
+//            echo('en cache');
+//        } else {
+//            sleep(2);
+//            $cache->save($key, $str);
+//            echo('pas en cache');
+//        }
 
-        $str = 'pppppp';
-        $cache = $this->get('doctrine_cache.providers.my_cache');
-        $key = md5($str);
-        if ($cache->contains($key)) {
-            $str = $cache->fetch($key);
-            echo('en cache');
-        } else {
+        /**/ // to cache some data
+
+        $cacheName = 'cacheData';
+        $cache = $this->get('app.cache');
+        if(! $data = $cache->read($cacheName, 20)) {
             sleep(2);
-            $cache->save($key, $str);
-            echo('pas en cache');
+            $data = 'Data cached ';
+            $cache->write($cacheName, $data);
         }
+        echo($data);
+
+
+        /**/ // to cache some code
+
+        if(! $cache->start('cacheCode')){
+            sleep(2);
+            echo('Code cached ');
+        }
+        $cache->end();
 
 
         // replace this example code with whatever you need
