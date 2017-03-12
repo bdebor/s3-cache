@@ -35,6 +35,8 @@ framework:
     php_errors:
         log: true
 
+    esi: { enabled: true }
+
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
