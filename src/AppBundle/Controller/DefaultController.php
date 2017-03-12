@@ -67,12 +67,13 @@ class DefaultController extends Controller
     public function postIndexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $post = $em->getRepository('AppBundle:Post')->findAll();
+        $posts = $em->getRepository('AppBundle:Post')->findAll();
 
         $response = $this->render('post/index.html.twig', array(
-            'post' => $post,
+            'posts' => $posts,
         ));
-        //sleep(2);
+
+        echo('refresh cache');
         $response->setSharedMaxAge(20); // seconds
 
         return $response;
@@ -91,10 +92,12 @@ class DefaultController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
 
+            //$_POST = array();
             return $this->redirectToRoute('post_index');
         }
 
@@ -102,5 +105,43 @@ class DefaultController extends Controller
             'post' => $post,
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * Lists all post entities.
+     *
+     * @Route("/post2/", name="post_index2")
+     * @Method({"GET", "POST"})
+     */
+    public function postIndex2Action(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $posts = $em->getRepository('AppBundle:Post')->findAll();
+
+        /*1*/
+
+        $post = new Post();
+        $form = $this->createForm('AppBundle\Form\PostType', $post);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em->persist($post);
+            $em->flush();
+
+            return $this->redirectToRoute('post_index2');
+        }
+
+        $response = $this->render('post/index2.html.twig', array(
+            'posts' => $posts,
+            /*1*/
+            'post' => $post,
+            'form' => $form->createView(),
+        ));
+
+        echo('refresh cache');
+        $response->setSharedMaxAge(40); // seconds
+
+        return $response;
     }
 }

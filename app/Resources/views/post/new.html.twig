@@ -1,6 +1,6 @@
 <h2>Post creation</h2>
 
-{{ form_start(form) }}
+{{ form_start(form, {method: 'POST', action: path('post_new')}) }}
     {{ form_widget(form) }}
     <input type="submit" value="Create" />
 {{ form_end(form) }}
