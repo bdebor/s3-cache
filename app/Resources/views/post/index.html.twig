@@ -21,7 +21,15 @@
         </tbody>
     </table>
 
-    {#{{ render(controller('AppBundle:Default:postNew')) }}#}
-    {{ render_esi(controller('AppBundle:Default:postNew')) }}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {{ render_esi(controller('AppBundle:Default:postNew')) }}
+    {% else %}
+        <p>
+            <a class="btn btn-success" href="{{ path('fos_user_security_login') }}">
+                <i class="fa fa-sign-in" aria-hidden="true"></i>login
+            </a>
+            Ajouter un post
+        </p>
+    {% endif %}
 
 {% endblock %}
